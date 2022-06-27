@@ -5,6 +5,6 @@ permalink: /sample/
 eleventyExcludeFromCollections: false
 ---
 
-```clj
+```clojure
 (+ 2 2)
 ```
