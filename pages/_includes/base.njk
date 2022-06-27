@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ description }}"/>
+    <title>{{ title }} Aprenda Clojure</title>
+    <script
+        src="https://cdn.usefathom.com/script.js"
+        site="VKLTBLJE"
+        included-domains="aprendaclojure.com.br"
+        defer
+    ></script>
+    <link rel="stylesheet" href="{{ '/css/style.css' | url }}">
+  </head>
+  <body>
+    <header class="flex mb-4 bg-[#164489] p-4">
+      <div class="w-full md:w-1/2">
+        <a href="/">
+          <img width="300" src="{{ '/img/1x/aprenda-clojure-logo.png' | url }}" alt="(Aprenda Clojure) em branco com o primeiro parêntese amarelo" srcset="{{ '/img/1x/aprenda-clojure-logo.png' | url }} 1x, {{ '/img/2x/aprenda-clojure-logo.png' | url }} 2x">
+        </a>
+      </div>
+    </header>
+    <div class="max-w-3xl m-auto p-2">
+
+
+    <div class="lg:px-16">
+      <h1 class="text-2xl font-bold">{{ title }}</h1>
+      <main class="prose lg:prose-xl">
+      {{ content | safe }}
+      </main>
+    </div>
+    </div>
+    <link rel="stylesheet" type="text/css" href="https://storage.googleapis.com/app.klipse.tech/css/codemirror.css">
+    <script>
+        window.klipse_settings = {
+            selector_eval_js: '.repl',
+            codemirror_options_in: {
+              lineWrapping: true,
+            },
+            codemirror_options_out: {
+                lineWrapping: true
+            },
+            beautify_strings: true
+        };
+    </script>
+    <script src="https://storage.googleapis.com/app.klipse.tech/plugin/js/klipse_plugin.js?v=8.0.1"></script>
+  </body>
+</html>

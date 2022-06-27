@@ -1,0 +1,31 @@
+{
+  "name": "aprenda-clojure",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy && npm run tw",
+    "tw": "npx tailwindcss -i ./assets/css/tailwind.pcss -o ./_site/css/style.css --minify",
+    "tw-dev": "npx tailwindcss -i ./assets/css/tailwind.pcss -o ./_site/css/style.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiagooak/aprendaclojure.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thiagooak/aprendaclojure/issues"
+  },
+  "homepage": "https://github.com/thiagooak/aprendaclojure#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^1.0.1",
+    "@tailwindcss/typography": "^0.5.2",
+    "autoprefixer": "^10.4.7",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.1.4"
+  }
+}
