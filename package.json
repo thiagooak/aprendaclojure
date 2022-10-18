@@ -2,6 +2,10 @@
   "name": "vercel-cljs",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "dev": "npx shadow-cljs watch frontend",
+    "build": "npx shadow-cljs release frontend"
+  },
   "devDependencies": {
     "shadow-cljs": "2.20.5"
   }
