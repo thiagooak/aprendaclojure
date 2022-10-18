@@ -6,9 +6,11 @@
   (+ 32 (* 9 (/ c 5))))
 
 (defn calc-temp [c]
-  (let [f (celcius-to-fahrenheit c)]
-    ;; @TODO choose correct emoji
-    (hash-map :celcius c :fahrenheit f :emoji "🥵")))
+  (let [f (celcius-to-fahrenheit c)
+        emoji (cond (< c 1) '🥶
+                    (> c 29) '🥵
+                    :else '😀)]
+    (hash-map :celcius c :fahrenheit f :emoji emoji)))
 
 (def temp-data (r/atom (calc-temp 0)))
 
