@@ -2,52 +2,53 @@
   (:require [reagent.core :as r]
             [reagent.dom :as rd]))
 
-(defn celcius-to-fahrenheit [c]
-  (+ 32 (* 9 (/ c 5))))
+(defn c-to-f [c]
+  (Math/round (+ 32 (* 1.8 c))))
 
-(defn calc-temp [c]
-  (let [f (celcius-to-fahrenheit c)
-        emoji (cond (< c 1) '🥶
-                    (> c 29) '🥵
+(defn f-to-c [f]
+  (Math/round (/ (- f 32) 1.8)))
+
+(defn calc-temp [unit value]
+  (let [c (cond (= unit :fahrenheit) (f-to-c value)
+                :else value)
+        f (cond (= unit :celcius) (c-to-f value)
+                :else value)
+        emoji (cond (< c -30) '🥶
+                    (< c 1) '⛄️
+                    (< c 15) '🧣
+                    (> c 40) '🔥
+                    (> c 27) '🥵
                     :else '😀)]
     (hash-map :celcius c :fahrenheit f :emoji emoji)))
 
-(def temp-data (r/atom (calc-temp 0)))
-
-(defn slider [value min max]
+(defn slider [unit value min max]
   [:input {:type "range" :value value :min min :max max
            :style {:width "100%"}
            :on-change (fn [e]
                         (let [new-value (js/parseInt (.. e -target -value))]
                           (swap! temp-data
                                  (fn []
-                                   (calc-temp new-value)))))}])
+                                   (calc-temp unit new-value)))))}])
 
 (defn temp-component []
   (let [{:keys [celcius fahrenheit emoji]} @temp-data]
     [:div
-     [:h3 "Temperature Converter"]
+     [:h1 {:class "text-5xl font-bold mb-4"} [:span {:class "mr-2"} emoji] "Temperature Converter"]
      [:div
-      "Celcius: " celcius "°C"
-      [slider celcius -100 +100]]
+      celcius "° Celcius"
+      [slider :celcius celcius -100 +100]]
      [:div
-      "Fahrenheit: " fahrenheit "°F"
-      ;; [slider fahrenheit -100 +100] @TODO add F sliders
-      ]
-     [:div
-      "Emoji: " emoji]]))
+      fahrenheit "° Fahrenheit"
+      [slider :fahrenheit fahrenheit -212 +212]]]))
 
-(defn some-component []
-  [:div {:class "max-w-4xl mx-auto min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8"}
-   [:h3 "Hey! I'm a component!"]
-   [:p
-    "I have " [:span {:class "font-bold"} "bold"]
-    [:span {:class "text-red-600"} " and red"]
-    " text."]])
+(defn template []
+  [:div {:class "max-w-4xl mx-auto min-h-screen flex flex-col justify-center p-12"}
+   [temp-component]
+   ])
 
 (defn ^:dev/after-load start
   []
-  (rd/render [temp-component]
+  (rd/render [template]
              (.getElementById js/document "app")))
 
 (defn init []
