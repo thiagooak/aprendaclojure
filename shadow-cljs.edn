@@ -9,4 +9,7 @@
  :builds
  {:frontend
   {:target :browser
-   :modules {:main {:init-fn app.core/init}}}}}
+   :modules {:main {:init-fn app.core/init}}}
+  :api {:target :esm
+        :output-dir "api"
+        :modules {:hello-world {:exports {default api.hello-world/handler}}}}}}

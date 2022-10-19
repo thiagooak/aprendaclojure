@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "npx shadow-cljs watch frontend",
     "build-css": "npx tailwindcss -i ./src/main.css -o ./public/css/main.css",
-    "build": "npm run build-css -- --minify; npx shadow-cljs release frontend"
+    "build": "npm run build-css -- --minify; npx shadow-cljs release frontend",
+    "vercel-build": "npx shadow-cljs release api"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.12",
