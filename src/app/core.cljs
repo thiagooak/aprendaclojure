@@ -21,6 +21,8 @@
                     :else '😀)]
     (hash-map :celcius c :fahrenheit f :emoji emoji)))
 
+(def temp-data (r/atom (calc-temp :celcius 0)))
+
 (defn slider [unit value min max]
   [:input {:type "range" :value value :min min :max max
            :style {:width "100%"}
