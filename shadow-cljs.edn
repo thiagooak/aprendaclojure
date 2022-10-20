@@ -11,5 +11,5 @@
   {:target :browser
    :modules {:main {:init-fn app.core/init}}}
   :api {:target :esm
-        :output-dir "api"
+        :output-dir "pages/api"
         :modules {:hello-world {:exports {default api.hello-world/handler}}}}}}
