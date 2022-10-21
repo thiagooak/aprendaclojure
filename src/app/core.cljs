@@ -26,7 +26,7 @@
   (let [c (convert-temp value unit :celcius)
         f (convert-temp value unit :fahrenheit)
         emoji (c-to-emoji c)]
-    (hash-map :celcius c :fahrenheit f :emoji emoji)))
+    {:celcius c :fahrenheit f :emoji emoji}))
 
 (def temp-data (r/atom (calc-temp :celcius 0)))
 
