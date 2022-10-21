@@ -20,5 +20,4 @@ pom.xml.asc
 .hgignore
 .hg/
 
-/pages/api
 .vercel

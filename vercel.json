@@ -1,7 +1,0 @@
-{
-    "functions": {
-        "api/test.cljs": {
-            "runtime": "vercel-cljs-test2@0.0.3"
-        }
-    }
-}
