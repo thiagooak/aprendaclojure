@@ -1,58 +1,55 @@
 (ns app.core
   (:require [reagent.core :as r]
-            [reagent.dom :as rd]))
+            [reagent.dom :as rd]
+            [cljs.js :refer [empty-state eval-str js-eval]]
+            [cljs.pprint :refer [pprint]]
+            [goog.dom :as gdom]
+            [cljs.tools.reader]
+            [sci.core :as sci]))
 
-(defn c-to-f [c]
-  (+ 32 (* 1.8 c)))
 
-(defn f-to-c [f]
-  (/ (- f 32) 1.8))
+;; (sci/eval-string "(inc 1)") => ;; 2
+;; (sci/eval-string "(inc x)" {:namespaces {'user {'x 2}}}) ;;=> 3
 
-(defn c-to-emoji [c]
-  (cond (< c -30) '🥶
-        (< c 1) '⛄️
-        (< c 15) '🧣
-        (> c 40) '🔥
-        (> c 27) '🥵
-        :else '😀))
+;; https://github.com/swannodette/swannodette.github.com/blob/master/code/blog/src/blog/cljs_next/core.cljs
 
-(defn convert-temp [value current-unit desired-unit]
-  (if (= current-unit desired-unit)
-    value
-    (cond (= current-unit :fahrenheit) (f-to-c value)
-          (= current-unit :celcius) (c-to-f value))))
+;; create cljs.user
+(set! (.. js/window -cljs -user) #js {})
 
-(defn calc-temp [unit value]
-  (let [c (convert-temp value unit :celcius)
-        f (convert-temp value unit :fahrenheit)
-        emoji (c-to-emoji c)]
-    {:celcius c :fahrenheit f :emoji emoji}))
+;; (def temp-data (r/atom (calc-temp :celcius 0)))
 
-(def temp-data (r/atom (calc-temp :celcius 0)))
+;; (defn slider [unit value min max]
+;;   [:input {:type "range" :value value :min min :max max
+;;            :class "w-full"
+;;            :on-change (fn [e]
+;;                         (let [new-value (js/parseInt (.. e -target -value))]
+;;                           (swap! temp-data
+;;                                  (fn []
+;;                                    (calc-temp unit new-value)))))}])
 
-(defn slider [unit value min max]
-  [:input {:type "range" :value value :min min :max max
-           :class "w-full"
-           :on-change (fn [e]
-                        (let [new-value (js/parseInt (.. e -target -value))]
-                          (swap! temp-data
-                                 (fn []
-                                   (calc-temp unit new-value)))))}])
+(enable-console-print!)
+(sci/alter-var-root sci/print-fn (constantly *print-fn*))
 
-(defn temp-component []
-  (let [{:keys [celcius fahrenheit emoji]} @temp-data]
-    [:div
-     [:h1 {:class "text-5xl font-bold mb-4"} [:span {:class "mr-2"} emoji] "Temperature Converter"]
-     [:div
-      (Math/round celcius) "° Celcius"
-      [slider :celcius celcius -100 +100]]
-     [:div
-      (Math/round fahrenheit) "° Fahrenheit"
-      [slider :fahrenheit fahrenheit -212 +212]]]))
+(defn evaluate [input callback]
+  (callback (sci/eval-string input))
+  )
+
+(defn editor [id defaultValue]
+  (let [in-id (str id "in")
+        out-id (str id "out")] [:div
+   [:textarea {:id in-id :defaultValue defaultValue} ]
+   [:textarea {:id out-id :defaultValue "."}]
+   [:input {:type "button" :value "Run" :on-click (fn []
+                                                    (let [in (gdom/getElement in-id)]
+                                                      (evaluate (.-value in) (fn [result]
+                                                                               (let [out (gdom/getElement out-id)]
+                                                                                 (set! (.-value out) result))))))}]]))
 
 (defn template []
   [:div {:class "max-w-4xl mx-auto min-h-screen flex flex-col justify-center p-12"}
-   [temp-component]])
+   [editor "add" "(+ 3 4)"]
+   [editor "print" "(print 5 4)"]
+   ])
 
 (defn ^:dev/after-load start
   []
