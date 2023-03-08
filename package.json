@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npx shadow-cljs watch frontend",
-    "build-css": "npx tailwindcss -i ./public/css/tailwind.pcss -o ./public/css/style.css --minify",
+    "build-css": "npx tailwindcss -i ./src/style.css -o ./public/css/style.css --minify",
     "build": "npm run build-css; npx shadow-cljs release frontend;"
   },
   "devDependencies": {
