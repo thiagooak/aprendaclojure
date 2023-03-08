@@ -24,7 +24,8 @@
                                                                              :spellCheck false
                                                                              :on-change #(reset! input (-> % .-target .-value))}]
                                                                  [:textarea {:className "border w-full lg:w-1/2 h-16"
-                                                                             :value @output}]
+                                                                             :value @output
+                                                                             :readOnly true}]
                                                                  [:input {:type "button"
                                                                           :className "rounded bg-blue-600 py-1 px-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                                                                           :value "Run"
