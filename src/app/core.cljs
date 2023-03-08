@@ -1,5 +1,6 @@
 (ns app.core
   (:require [reagent.core :as r]
+            ["react-dom/client" :refer [createRoot]]
             [reagent.dom :as rd]
             ;; [cljs.pprint :refer [pprint]]
             [cljs.tools.reader]
@@ -18,18 +19,18 @@
 
 (defn editor [defaultValue]
   (let [input (r/atom defaultValue)
-        output (r/atom "; click run to see the output")] (fn [] [:div {:className "mt-2"}
-                                                                 [:textarea {:defaultValue @input
-                                                                             :className "border w-full lg:w-1/2 h-16"
-                                                                             :spellCheck false
-                                                                             :on-change #(reset! input (-> % .-target .-value))}]
-                                                                 [:textarea {:className "border w-full lg:w-1/2 h-16"
-                                                                             :value @output
-                                                                             :readOnly true}]
-                                                                 [:input {:type "button"
-                                                                          :className "rounded bg-blue-600 py-1 px-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                                                                          :value "Run"
-                                                                          :on-click #(reset! output (evaluate @input))}]])))
+        output (r/atom "")] (fn [] [:div {:className "mt-2"}
+                                    [:textarea {:defaultValue @input
+                                                :className "border w-full lg:w-1/2 h-16 px-2 py-1"
+                                                :spellCheck false
+                                                :on-change #(reset! input (-> % .-target .-value))}]
+                                    [:textarea {:className "border w-full lg:w-1/2 h-16 px-2 py-1"
+                                                :value @output
+                                                :readOnly true}]
+                                    [:input {:type "button"
+                                             :className "rounded bg-blue-600 py-1 px-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                                             :value "Run"
+                                             :on-click #(reset! output (evaluate @input))}]])))
 
 (defn page []
   [:div {:class "max-w-4xl mx-auto min-h-screen flex flex-col"}
@@ -75,11 +76,15 @@
      [:li [:code "conj"] " tende a ter performance melhor do que " [:code "cons"]]
      [:li "Criar cópias quase identicas de um vetor tende a ser rápido"]]]])
 
-(defn ^:dev/after-load start
-  []
-  (rd/render [page]
-             (.getElementById js/document "app")))
+(defonce root (createRoot (.getElementById js/document "app")))
 
-(defn init []
-  ;; (println "Hello World"); This prints to the browser console
-  (start))
+(defn init
+  []
+  (.render root (r/as-element [page])))
+
+(defn ^:dev/after-load re-render
+  []
+  ;; The `:dev/after-load` metadata causes this function to be called
+  ;; after shadow-cljs hot-reloads code.
+  ;; This function is called implicitly by its annotation.
+  (init))
