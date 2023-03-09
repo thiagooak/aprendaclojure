@@ -19,12 +19,12 @@
 
 (defn editor [defaultValue]
   (let [input (r/atom defaultValue)
-        output (r/atom "")] (fn [] [:div {:className "mt-2"}
+        output (r/atom "")] (fn [] [:div {:className "mt-2 bg-gray-100 p-2 rounded-lg"}
                                     [:textarea {:defaultValue @input
-                                                :className "border w-full lg:w-1/2 h-16 px-2 py-1"
+                                                :className "border-r border-b w-full lg:w-1/2 h-16 px-2 py-1 bg-transparent"
                                                 :spellCheck false
                                                 :on-change #(reset! input (-> % .-target .-value))}]
-                                    [:textarea {:className "border w-full lg:w-1/2 h-16 px-2 py-1"
+                                    [:textarea {:className "border-b  w-full lg:w-1/2 h-16 px-2 py-1 bg-transparent"
                                                 :value @output
                                                 :readOnly true}]
                                     [:input {:type "button"
