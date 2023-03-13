@@ -1,7 +1,7 @@
 {
-  "name": "vercel-cljs",
+  "name": "aprenda-clojure",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "npx shadow-cljs watch frontend",
     "build-css": "npx tailwindcss -i ./src/style.css -o ./public/css/style.css --minify",
