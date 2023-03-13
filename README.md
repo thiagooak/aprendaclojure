@@ -1,23 +1,12 @@
-# Vercel CLJS
+# Aprenda Clojure
 
-## Run in Development
+[aprendaclojure.com.br](aprendaclojure.com.br)
+
+Uma (lenta) tentativa de organizar em uma sequência lógica e leve o que uma pessoa precisa aprender para se tornar proficiente em Clojure.
+
+## Rodando em Dev
 
 * `npm install`
-
 * `npm run build-css -- --watch` (in a separate terminal)
-
 * `npm run dev`
-
 * `open http://localhost:8080`
-
-## Deploy to Vercel
-
-* Create an account at https://vercel.com/
-* Push your code to a Github repo
-* Create a new Vercel project with the following deploy configuration:
-  * Framework Preset: `Other`
-  * Build Command: `npm run build`
-  * Output Directory: `public`
-  * Install Command: `npm install`
-  * Development Command: None
-
