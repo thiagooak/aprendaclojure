@@ -31,10 +31,21 @@
                                              :className "rounded bg-blue-600 py-1 px-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                                              :value "Run"
                                              :on-click #(reset! output (evaluate @input))}]])))
+(defn basic-functions []
+  [:div [:h1 {:className "text-2xl font-bold"} "Funções"]
+   [:p "Clojure faz parte da família de linguagens Lisp. O nome Lisp vem do inglês List Processing (Processamento de Listas). Listas são definidas entre parênteses e uma lista é interpretada por padrão considerando que seu primeiro item é uma função e os itens a seguir são parâmetros."]
+   [editor "; 🔧 substitua \"função\" abaixo por +
+(função 1 2 3)"]
+   [:p "Para criar uma nova função você pode usar a função defn como no exemplo abaixo"]
+   [editor "; define uma função chamada soma que por sua vez aplica a função \"+\" aos parâmetros \"primeiro\" e \"segundo\"
+(defn soma [primeiro segundo]
+ (+ primeiro segundo))
 
-(defn page []
-  [:div {:class "max-w-4xl mx-auto min-h-screen flex flex-col"}
-   [:h1 {:className "text-2xl font-bold"} "Vetores"]
+; chama a função \"soma\" criada acima
+(soma 10 1)"]])
+
+(defn basic-vectors []
+  [:div [:h1 {:className "text-2xl font-bold"} "Vetores"]
    [:p "Um vetor é uma coleção ordenada de itens"]
    [editor "[\"Bulbasaur\" \"Charmander\" \"Squirtle\"]"]
 
@@ -75,6 +86,11 @@
      [:li "Acesso ao " [:code "nth"] " item é rápido"]
      [:li [:code "conj"] " tende a ter performance melhor do que " [:code "cons"]]
      [:li "Criar cópias quase identicas de um vetor tende a ser rápido"]]]])
+
+(defn page []
+  [:div {:class "max-w-4xl mx-auto min-h-screen flex flex-col"}
+   [basic-functions]
+   [basic-vectors]])
 
 (defonce root (createRoot (.getElementById js/document "app")))
 
