@@ -93,8 +93,8 @@
   [:div [:h1 {:className "text-2xl font-bold"} "Vetores Associativos (Maps)"]
    [:p "Um vetor associativo (em inglês, map) é um conjunto não-ordenado de pares formados por uma chave e um valor."]
    [editor "{:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5}"]
-   [:p "No exemplo acima usamos keywords para definir as nossas chaves. Um keyword é uma termo começando com dois pontos (:nome, :tipo e :peso no exemplo acima).
-        Não é obrigatório usar keywords para representar as nossa chaves, mas isso nos da a vantagem de que um keyword também é um função que procura por ela mesma. Então podemos fazer o seguinte:"]
+   [:p "No exemplo acima usamos keywords para definir as nossas chaves. Keywords são termos começando com dois pontos (:nome, :tipo e :peso no exemplo acima).
+        Não é obrigatório usar keywords para representar as nossa chaves, mas isso nos da uma vantagem já que keywords também são funções que procuram por ela mesmas. Então podemos fazer o seguinte:"]
    [editor "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5})
 (:tipo pokemon)"]
 
