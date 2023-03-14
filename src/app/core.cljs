@@ -1,21 +1,23 @@
 (ns app.core
   (:require [reagent.core :as r]
             ["react-dom/client" :refer [createRoot]]
-            [reagent.dom :as rd]
-            ;; [cljs.pprint :refer [pprint]]
+            ;; [reagent.dom :as rd]
+            [cljs.pprint :refer [pprint]]
             [cljs.tools.reader]
             [sci.core :as sci]))
 
 ;; create cljs.user
 ;; (set! (.. js/window -cljs -user) #js {})
-
-(enable-console-print!)
-(sci/alter-var-root sci/print-fn (constantly *print-fn*))
-(sci/alter-var-root sci/out (constantly *out*))
+;; (enable-console-print!)
+;; (sci/alter-var-root sci/print-fn (constantly *print-fn*))
+;; (sci/alter-var-root sci/out (constantly *out*))
 
 
 (defn evaluate [input]
-  (sci/eval-string input))
+  (try
+    (let [output (sci/eval-string input)]
+      (with-out-str (pprint output)))
+    (catch js/Error e (str "caught exception: " e))))
 
 (defn editor [defaultValue]
   (let [input (r/atom defaultValue)
@@ -87,10 +89,38 @@
      [:li [:code "conj"] " tende a ter performance melhor do que " [:code "cons"]]
      [:li "Criar cópias quase identicas de um vetor tende a ser rápido"]]]])
 
+(defn basic-maps []
+  [:div [:h1 {:className "text-2xl font-bold"} "Vetores Associativos (Maps)"]
+   [:p "Um vetor associativo (em inglês, map) é um conjunto não-ordenado de pares formados por uma chave e um valor."]
+   [editor "{:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5}"]
+   [:p "No exemplo acima usamos keywords para definir as nossas chaves. Um keyword é uma termo começando com dois pontos (:nome, :tipo e :peso no exemplo acima).
+        Não é obrigatório usar keywords para representar as nossa chaves, mas isso nos da a vantagem de que um keyword também é um função que procura por ela mesma. Então podemos fazer o seguinte:"]
+   [editor "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5})
+(:tipo pokemon)"]
+
+   [:h2 {:className "text-1xl font-bold text-gray-600 mt-8"} "Funções básicas"]
+
+   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/assoc" :target "_blank"} "Assoc"]]
+   [editor "(def pokemon {:nome \"Charmander\"})
+(assoc pokemon :peso 8.5)"]
+
+   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/dissoc" :target "_blank"} "Dissoc"]]
+   [editor "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\"})
+(dissoc pokemon :tipo)"]
+
+   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/keys" :target "_blank"} "Keys"]]
+   [editor "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5})
+(keys pokemon)"]
+
+   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/vals" :target "_blank"} "Vals"]]
+   [editor "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5})
+(vals pokemon)"]])
+
 (defn page []
   [:div {:class "max-w-4xl mx-auto min-h-screen flex flex-col"}
    [basic-functions]
-   [basic-vectors]])
+   [basic-vectors]
+   [basic-maps]])
 
 (defonce root (createRoot (.getElementById js/document "app")))
 
