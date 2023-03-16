@@ -30,7 +30,7 @@
                       (.remove (.-classList (.getElementById js/document "repl-input")) "animate-pulse")
 
                       (set! (.-innerHTML child-input) (str "<div class=\"flex\">user=> <div>" (replace @repl-input "\n" "<br>") "</div></div>"))
-                      (set! (.-innerHTML child-output) @repl-output)
+                      (set! (.-innerHTML child-output) (str "<div class=\"border-dashed border-gray-600 border-b mb-2 pb-2\">" @repl-output "</div>"))
                       (.appendChild parent child-input)
                       (.appendChild parent child-output)
                       (.scrollTo parent 0 (.-scrollHeight parent))))
