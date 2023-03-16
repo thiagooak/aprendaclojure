@@ -7,7 +7,7 @@
             [sci.core :as sci]
             [goog.dom :as gdom]))
 ;; create cljs.user
-(set! (.. js/window -cljs -user) #js {})
+;; (set! (.. js/window -cljs -user) #js {})
 
 ;; (enable-console-print!)
 ;; (sci/alter-var-root sci/print-fn (constantly *print-fn*))
