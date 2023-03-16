@@ -21,9 +21,9 @@
 
 (defn editor [defaultValue]
   (let [input (r/atom defaultValue)
-        output (r/atom "")] (fn [] [:div {:className "my-2 bg-[#f5f2f0] p-2 rounded-lg"}
+        output (r/atom "")] (fn [] [:div
                                     [:textarea {:defaultValue @input
-                                                :className "border-r border-b w-full lg:w-1/2 h-16 px-2 py-1 bg-transparent"
+                                                :className "border-r border-b w-full h-16 px-2 py-1 bg-transparent"
                                                 :spellCheck false
                                                 :on-change #(reset! input (-> % .-target .-value))}]
                                     [:textarea {:className "border-b  w-full lg:w-1/2 h-16 px-2 py-1 bg-transparent"
@@ -48,8 +48,8 @@
 (defn basic-functions []
   [:div [:h1 {:className "text-2xl font-bold"} "Funções"]
    [:p "Clojure faz parte da família de linguagens Lisp. O nome Lisp vem do inglês List Processing (Processamento de Listas). Listas são definidas entre parênteses e uma lista é interpretada por padrão considerando que seu primeiro item é uma função e os itens a seguir são parâmetros."]
-   [editor "; 🔧 substitua \"função\" abaixo por +
-(função 1 2 3)"]
+   [clojure-runnable "; 🔧 substitua \"função\" abaixo por +
+(+ 1 2 3)"]
 
    [:p "Para criar uma nova função você pode usar a função " (clojure-inline "(defn)") " como no exemplo abaixo"]
    [clojure-runnable "; define uma função chamada soma que por sua vez aplica
@@ -131,10 +131,12 @@
 (vals pokemon)"]])
 
 (defn page []
-  [:div {:class "max-w-4xl mx-auto min-h-screen flex flex-col"}
-   [basic-functions]
-   [basic-vectors]
-   [basic-maps]])
+  [:div {:className "flex flex-row"}
+   [:div {:className "basis-2/3 min-h-screen px-4 py-3"}
+    [basic-functions]
+    [basic-vectors]
+    [basic-maps]]
+   [:div {:className "basis-1/3 min-h-screen bg-black text-white"} [editor "Type here!"]]])
 
 (defonce root (createRoot (.getElementById js/document "app")))
 
