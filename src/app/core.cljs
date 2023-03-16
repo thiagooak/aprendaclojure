@@ -4,8 +4,8 @@
             ;; [reagent.dom :as rd]
             [cljs.pprint :refer [pprint]]
             [cljs.tools.reader]
-            [sci.core :as sci]))
-
+            [sci.core :as sci]
+            [clojure.string :refer [replace]]))
 ;; create cljs.user
 ;; (set! (.. js/window -cljs -user) #js {})
 ;; (enable-console-print!)
@@ -19,45 +19,74 @@
       (with-out-str (pprint output)))
     (catch js/Error e (str "caught exception: " e))))
 
-(defn editor [defaultValue]
-  (let [input (r/atom defaultValue)
-        output (r/atom "")] (fn [] [:div {:className "my-2 bg-[#f5f2f0] p-2 rounded-lg"}
-                                    [:textarea {:defaultValue @input
-                                                :className "border-r border-b w-full lg:w-1/2 h-16 px-2 py-1 bg-transparent"
-                                                :spellCheck false
-                                                :on-change #(reset! input (-> % .-target .-value))}]
-                                    [:textarea {:className "border-b  w-full lg:w-1/2 h-16 px-2 py-1 bg-transparent"
-                                                :value @output
-                                                :readOnly true}]
-                                    [:input {:type "button"
-                                             :className "rounded bg-blue-600 py-1 px-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                                             :value "Run"
-                                             :on-click #(reset! output (evaluate @input))}]])))
+(def repl-input (r/atom "\"Hello, World!\""))
+(def repl-output (r/atom ""))
+(defn repl-print [] (let [parent (.getElementById js/document "print")
+                          child-input (.createElement js/document "p")
+                          child-output (.createElement js/document "p")]
+
+                      (reset! repl-output (evaluate @repl-input))
+
+                      (.remove (.-classList (.getElementById js/document "repl-input")) "animate-pulse")
+
+                      (set! (.-innerHTML child-input) (str "<div class=\"flex\">user=> <div>" (replace @repl-input "\n" "<br>") "</div></div>"))
+                      (set! (.-innerHTML child-output) (str "<div class=\"border-dashed border-gray-600 border-b mb-2 pb-2\">" @repl-output "</div>"))
+                      (.appendChild parent child-input)
+                      (.appendChild parent child-output)
+                      (.scrollTo parent 0 (.-scrollHeight parent))))
+
+(defn update-repl-input [value]
+  (let [el (.getElementById js/document "repl-input")]
+    (reset! repl-input value)
+    (set! (.-value el) value)
+    (.add (.-classList el) "animate-pulse")))
+
+(comment
+  (update-repl-input "hi"))
+
+(defn editor []
+  (fn []
+    [:div {:className "h-full"}
+     [:div {:id "print" :className "px-2 py-1 h-3/4 max-h-3/4 overflow-scroll scroll-smooth"} " "]
+     [:div {:className "flex-row sm:flex px-2 sm:h-1/4"}
+      "user=>"
+      [:textarea {:defaultValue @repl-input
+                  :id "repl-input"
+                  :className "w-full h-full p-1 bg-gray-800"
+                  :spellCheck false
+                  :on-focus #(.remove (-> % .-target .-classList) "animate-pulse")
+                  :on-change #(reset! repl-input (-> % .-target .-value))}]
+      [:input {:type "button"
+               :className "rounded bg-blue-600 py-1 px-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+               :value "Enter"
+               :on-click #(repl-print)}]]]))
 
 (defn clojure-runnable [input]
-  (let [output (r/atom "")] (fn [] [:div {:className "my-2 bg-[#f5f2f0] p-1 rounded-lg"}
-                                    [:pre [:code {:className "language-clojure"} input]]
-                                    [:input {:type "button"
-                                             :className "rounded bg-blue-600 py-1 px-2 ml-4 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                                             :value "Run"
-                                             :on-click #(reset! output (evaluate input))}]
-                                    [:div {:className "ml-4 w-full lg:w-1/2 h-16 py-1 bg-transparent"} @output]])))
+  [:div {:className "mb-4"}
+   [:pre [:code {:className "language-clojure"} input]]
+
+   [:input {:type "button"
+            :className "rounded bg-blue-600 py-1 px-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            :value "Enviar código para o REPL"
+            :on-click #(update-repl-input input)}]])
 (defn clojure-inline [input]
   [:code {:className "language-clojure"} input])
 
 (defn basic-functions []
   [:div [:h1 {:className "text-2xl font-bold"} "Funções"]
-   [:p "Clojure faz parte da família de linguagens Lisp. O nome Lisp vem do inglês List Processing (Processamento de Listas). Listas são definidas entre parênteses e uma lista é interpretada por padrão considerando que seu primeiro item é uma função e os itens a seguir são parâmetros."]
-   [editor "; 🔧 substitua \"função\" abaixo por +
-(função 1 2 3)"]
+   [:p "Clojure faz parte da família de linguagens Lisp. "
+    "O nome Lisp vem do inglês List Processing (Processamento de Listas). "
+    "Listas são definidas entre parênteses e uma lista é interpretada por padrão considerando que seu primeiro item é uma função e os itens a seguir são parâmetros."
+    "No exemplo abaixo, \"+\" é uma função."]
+   [clojure-runnable "(+ 1 2 3)"]
 
-   [:p "Para criar uma nova função você pode usar a função " (clojure-inline "(defn)") " como no exemplo abaixo"]
-   [clojure-runnable "; define uma função chamada soma que por sua vez aplica
-; a função \"+\" aos parâmetros \"primeiro\" e \"segundo\"
-(defn soma [primeiro segundo]
- (+ primeiro segundo))
+   [:p "Para criar uma nova função você pode usar a função "
+    (clojure-inline "(defn)")
+    ". No exemplo abaixo, Definimos uma função chamada soma que por sua vez aplica "
+    "a função \"+\" aos parâmetros \"primeiro\" e \"segundo\""]
+   [clojure-runnable "(defn soma [primeiro segundo]
+  (+ primeiro segundo))
 
-; chama a função \"soma\" criada acima
 (soma 10 1)"]])
 
 (defn basic-vectors []
@@ -131,10 +160,29 @@
 (vals pokemon)"]])
 
 (defn page []
-  [:div {:class "max-w-4xl mx-auto min-h-screen flex flex-col"}
-   [basic-functions]
-   [basic-vectors]
-   [basic-maps]])
+  [:div {:className "flex flex-row"}
+   [:div {:className "basis-2/3 max-h-screen overflow-scroll"}
+    [:header {:className "flex flex-row bg-[#164489] p-4"}
+     [:div {:className "mx-auto"}
+      [:a {:href "/"}
+       [:img
+        {:width "300"
+         :src "/img/1x/aprenda-clojure-logo.png"
+         :alt "(Aprenda Clojure) em branco com o primeiro parêntese amarelo"
+         :srcSet "/img/1x/aprenda-clojure-logo.png 1x, /img/2x/aprenda-clojure-logo.png 2x"}]]]
+     [:a {:href "https://github.com/thiagooak/aprendaclojure" :className "text-white hover:text-gray-500"}
+      [:span {:className "sr-only"} "GitHub"]
+      [:svg {:className "h-6 w-6" :fill "currentColor" :viewBox "0 0 24 24" :aria-hidden "true"}
+       [:path
+        {:fill-rule "evenodd"
+         :d "M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+         :clip-rule "evenodd"}]]]]
+    [:div {:className "px-4 py-3 max-w-4xl mx-auto"}
+     [basic-functions]
+     [basic-vectors]
+     [basic-maps]]]
+   [:div {:className "basis-1/3 max-h-screen bg-black text-white"}
+    [editor]]])
 
 (defonce root (createRoot (.getElementById js/document "app")))
 
