@@ -32,7 +32,8 @@
                       (set! (.-innerHTML child-input) (str "<div class=\"flex\">user=> <div>" (replace @repl-input "\n" "<br>") "</div></div>"))
                       (set! (.-innerHTML child-output) @repl-output)
                       (.appendChild parent child-input)
-                      (.appendChild parent child-output)))
+                      (.appendChild parent child-output)
+                      (.scrollTo parent 0 (.-scrollHeight parent))))
 
 (defn update-repl-input [value]
   (let [el (.getElementById js/document "repl-input")]
@@ -46,7 +47,7 @@
 (defn editor []
   (fn []
     [:div {:className "h-full"}
-     [:div {:id "print" :className "px-2 py-1 h-3/4 max-h-3/4 overflow-scroll"} " "]
+     [:div {:id "print" :className "px-2 py-1 h-3/4 max-h-3/4 overflow-scroll scroll-smooth"} " "]
      [:div {:className "flex-row sm:flex px-2 sm:h-1/4"}
       "user=>"
       [:textarea {:defaultValue @repl-input
