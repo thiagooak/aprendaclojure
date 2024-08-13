@@ -100,7 +100,6 @@
 
               (soma 10 1)"]])
 
-;[basic-vectors]
 (defn home-page [] (app.components/page basic-functions))
 (defn vectors-page [] (app.components/page basic-vectors))
 (defn maps-page [] (app.components/page basic-maps))
@@ -123,7 +122,7 @@
 (defn mount-root []
   (rd/render [page] (.getElementById js/document "app")))
 
-(defn init []
+(defn init! []
   (accountant/configure-navigation!
    {:nav-handler
     (fn [path]
@@ -139,4 +138,4 @@
   ;; The `:dev/after-load` metadata causes this function to be called
   ;; after shadow-cljs hot-reloads code.
   ;; This function is called implicitly by its annotation.
-  (init))
+  (init!))
