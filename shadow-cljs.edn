@@ -4,7 +4,9 @@
 
  :dependencies
  [[reagent "1.1.1"]
-  [org.babashka/sci "0.7.38"]]
+  [org.babashka/sci "0.7.38"]
+  [clj-commons/secretary "1.2.4"]
+  [venantius/accountant "0.2.5"]]
 
  :dev-http {8080 "public"}
  :builds
