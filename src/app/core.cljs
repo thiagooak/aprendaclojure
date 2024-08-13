@@ -8,12 +8,6 @@
             [accountant.core :as accountant]
             [reagent.core :as r]))
 
-;; create cljs.user
-;; (set! (.. js/window -cljs -user) #js {})
-;; (enable-console-print!)
-;; (sci/alter-var-root sci/print-fn (constantly *print-fn*))
-;; (sci/alter-var-root sci/out (constantly *out*))
-
 (defonce root (createRoot (.getElementById js/document "app")))
 
 (defn mount-root [page]

@@ -5,8 +5,7 @@
 (defn nav [] [:ul
               [:li [:a {:href "/"} "Functions"]]
               [:li [:a {:href "/vectors"} "Vectors"]]
-              [:li [:a {:href "/maps"} "Maps"]]
-              ])
+              [:li [:a {:href "/maps"} "Maps"]]])
 
 (defn page [children]
   [:div {:className "flex flex-row"}
@@ -28,6 +27,6 @@
          :clip-rule "evenodd"}]]]]
     [:div {:className "px-4 py-3 max-w-4xl mx-auto flex flex-row"}
      [:div {:className "w-1/3"} [nav]]
-     [children]]]
+     [:div {:className "w-2/3"} [children]]]]
    [:div {:className "basis-1/3 max-h-screen bg-black text-white"}
     [app.util/editor]]])

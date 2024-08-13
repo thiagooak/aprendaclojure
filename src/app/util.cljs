@@ -32,9 +32,6 @@
     (set! (.-value el) value)
     (.add (.-classList el) "animate-pulse")))
 
-(comment
-  (update-repl-input "hi"))
-
 (defn editor []
   (fn []
     [:div {:className "h-full"}
@@ -60,5 +57,6 @@
             :className "rounded bg-blue-600 py-1 px-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             :value "Enviar código para o REPL"
             :on-click #(update-repl-input input)}]])
+
 (defn clojure-inline [input]
   [:code {:className "language-clojure"} input])
