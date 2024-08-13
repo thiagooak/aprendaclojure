@@ -3,8 +3,8 @@
  ["src"]
 
  :dependencies
- [[reagent "1.1.1"]
-  [org.babashka/sci "0.7.38"]
+ [[reagent "1.2.0"]
+  [org.babashka/sci "0.8.43"]
   [clj-commons/secretary "1.2.4"]
   [venantius/accountant "0.2.5"]]
 
