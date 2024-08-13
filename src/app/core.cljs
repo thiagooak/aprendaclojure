@@ -104,25 +104,24 @@
 (defn vectors-page [] (app.components/page basic-vectors))
 (defn maps-page [] (app.components/page basic-maps))
 
+;; (def selected-page (r/atom home-page))
 
-(def selected-page (r/atom home-page))
+;; (defn page []
+;;   [@selected-page])
 
-(defn page []
-  [@selected-page])
+(defroute "/" []
+  (rd/render [home-page] (.getElementById js/document "app")))
 
-(secretary/defroute "/" []
-  (reset! selected-page home-page))
+(defroute "/vectors" []
+  (rd/render [vectors-page] (.getElementById js/document "app")))
 
-(secretary/defroute "/vectors" []
-  (reset! selected-page vectors-page))
-
-(secretary/defroute "/maps" []
-  (reset! selected-page maps-page))
+(defroute "/maps" []
+  (rd/render [maps-page] (.getElementById js/document "app")))
 
 (defn mount-root []
-  (rd/render [page] (.getElementById js/document "app")))
+  (rd/render [home-page] (.getElementById js/document "app")))
 
-(defn init! []
+(defn init []
   (accountant/configure-navigation!
    {:nav-handler
     (fn [path]
@@ -130,12 +129,11 @@
     :path-exists?
     (fn [path]
       (secretary/locate-route path))})
-  (accountant/dispatch-current!)
-  (mount-root))
+  (accountant/dispatch-current!))
 
 (defn ^:dev/after-load re-render
   []
   ;; The `:dev/after-load` metadata causes this function to be called
   ;; after shadow-cljs hot-reloads code.
   ;; This function is called implicitly by its annotation.
-  (init!))
+  (init))
