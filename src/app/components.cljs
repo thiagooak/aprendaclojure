@@ -4,8 +4,8 @@
 
 (defn nav [] [:ul
               [:li [:a {:href "/"} "Functions"]]
-              [:li [:a {:href "/vectors"} "Vectors"]]
-              [:li [:a {:href "/maps"} "Maps"]]])
+              [:li [:a {:href "/#vectors"} "Vectors"]]
+              [:li [:a {:href "/#maps"} "Maps"]]])
 
 (defn page [children]
   [:div {:className "flex flex-row"}

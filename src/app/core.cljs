@@ -16,10 +16,10 @@
 (defroute "/" []
   (mount-root #(app.components/page app.pages/basic-functions)))
 
-(defroute "/vectors" []
+(defroute "/#vectors" []
   (mount-root #(app.components/page app.pages/basic-vectors)))
 
-(defroute "/maps" []
+(defroute "/#maps" []
   (mount-root #(app.components/page app.pages/basic-maps)))
 
 (defn init []
