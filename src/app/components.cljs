@@ -8,7 +8,7 @@
               [:li [:a {:href "/#maps"} "Maps"]]])
 
 (defn page [children]
-  [:div {:className "flex flex-row"}
+  [:div {:className "flex flex-row" :onLoad #((. js/window.Prism highlightAll))}
    [:div {:className "basis-2/3 max-h-screen overflow-scroll"}
     [:header {:className "flex flex-row bg-[#164489] p-4"}
      [:div {:className "mx-auto"}
@@ -18,7 +18,7 @@
          :src "/img/1x/aprenda-clojure-logo.png"
          :alt "(Aprenda Clojure) em branco com o primeiro parêntese amarelo"
          :srcSet "/img/1x/aprenda-clojure-logo.png 1x, /img/2x/aprenda-clojure-logo.png 2x"}]]]
-     [:a {:href "https://github.com/thiagooak/aprendaclojure" :className "text-white hover:text-gray-500"}
+     [:a {:href "https://github.com/thiagooak/aprendaclojure" :className "text-white hover:text-gray-500" :target "_blank"}
       [:span {:className "sr-only"} "GitHub"]
       [:svg {:className "h-6 w-6" :fill "currentColor" :viewBox "0 0 24 24" :aria-hidden "true"}
        [:path

@@ -11,19 +11,7 @@
 (defonce root (createRoot (.getElementById js/document "app")))
 
 (defn mount-root [page]
-  (.render root (r/as-element [page]))
-
-  ;; stuff that should be highlighted
-  (js/console.log (.getElementsByClassName js/document "language-clojure"))
-
-  ;; the function exists
-  (js/console.log js/window.Prism.highlightAll)
-
-  ;; nothing happens when I run it :/
-  (js/window.Prism.highlightAll)
-
-  ;; docs https://prismjs.com/
-  )
+  (.render root (r/as-element [page])))
 
 (defroute "/" []
   (mount-root #(app.components/page app.pages/basic-functions)))
