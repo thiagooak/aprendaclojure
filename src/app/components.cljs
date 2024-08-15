@@ -3,9 +3,10 @@
    [app.util]))
 
 (defn nav [] [:ul
-              [:li [:a {:href "/"} "Functions"]]
-              [:li [:a {:href "/#vectors"} "Vectors"]]
-              [:li [:a {:href "/#maps"} "Maps"]]])
+              [:li [:a {:href "/"} "Início"]]
+              [:li [:a {:href "/#vectors"} "Vetores"]]
+              [:li [:a {:href "/#maps"} "Maps"]]
+              [:li [:a {:href "/#functions"} "Funções"]]])
 
 (defn page [children]
   [:div {:className "flex flex-row" :onLoad #((. js/window.Prism highlightAll))}
@@ -28,5 +29,5 @@
     [:div {:className "px-4 py-3 max-w-4xl mx-auto flex flex-row"}
      [:div {:className "w-1/3"} [nav]]
      [:div {:className "w-2/3"} [children]]]]
-   [:div {:className "basis-1/3 max-h-screen bg-black text-white"}
+   [:div {:className "basis-1/3 max-h-screen min-h-screen h-screen bg-black text-white"}
     [app.util/editor]]])

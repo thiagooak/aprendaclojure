@@ -20,8 +20,10 @@
 
                       (.remove (.-classList (.getElementById js/document "repl-input")) "animate-pulse")
 
-                      (set! (.-innerHTML child-input) (str "<div class=\"flex\">user=> <div>" (replace @repl-input "\n" "<br>") "</div></div>"))
-                      (set! (.-innerHTML child-output) (str "<div class=\"border-dashed border-gray-600 border-b mb-2 pb-2\">" @repl-output "</div>"))
+                      (set! (.-innerHTML child-input)
+                            (str "<div class=\"flex\">user=> <div>" (replace @repl-input "\n" "<br>") "</div></div>"))
+                      (set! (.-innerHTML child-output)
+                            (str "<div class=\"border-dashed border-gray-600 border-b mb-2 pb-2\">" @repl-output "</div>"))
                       (.appendChild parent child-input)
                       (.appendChild parent child-output)
                       (.scrollTo parent 0 (.-scrollHeight parent))))
@@ -47,16 +49,17 @@
       [:input {:type "button"
                :className "rounded bg-blue-600 py-1 px-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                :value "Enter"
+               :autoComplete "off"
                :on-click #(repl-print)}]]]))
 
-(defn clojure-runnable [input]
+(defn runnable [input]
   [:div {:className "mb-4"}
    [:pre [:code {:className "language-clojure"} input]]
 
    [:input {:type "button"
             :className "rounded bg-blue-600 py-1 px-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-            :value "Enviar código para o REPL"
-            :on-click #(update-repl-input input)}]])
+            :value "Rodar Código"
+            :on-click #(do (update-repl-input input) (repl-print))}]])
 
-(defn clojure-inline [input]
+(defn inline [input]
   [:code {:className "language-clojure"} input])

@@ -14,6 +14,9 @@
   (.render root (r/as-element [page])))
 
 (defroute "/" []
+  (mount-root #(app.components/page app.pages/home)))
+
+(defroute "/#functions" []
   (mount-root #(app.components/page app.pages/basic-functions)))
 
 (defroute "/#vectors" []

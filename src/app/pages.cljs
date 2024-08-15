@@ -1,89 +1,94 @@
 (ns app.pages
-  (:require [app.util]))
+  (:require [app.util :as u]))
+
+(defn h1 [text] [:h1 {:className "text-2xl font-bold"} text])
+(defn h2 [text] [:h2 {:className "text-1xl font-bold text-gray-600 mt-8"} text])
+(defn link [href text] [:p {:className "mt-2"} [:a {:href href :target "_blank"} text]])
+
+(defn home []
+  [:div (h1 "Início")
+   [:p "Clojure faz parte da família de linguagens Lisp. "
+    "O nome Lisp vem do inglês List Processing (Processamento de Listas). "
+    "Listas são definidas entre parênteses e uma lista é interpretada por padrão considerando que seu primeiro item é uma função e os itens a seguir são parâmetros."]
+   [u/runnable "(+ 1 2 3)"]])
 
 (defn basic-vectors []
-  [:div [:h1 {:className "text-2xl font-bold"} "Vetores"]
+  [:div (h1 "Vetores")
    [:p "Um vetor é uma coleção ordenada de itens"]
-   [app.util/clojure-runnable "[\"Bulbasaur\" \"Charmander\" \"Squirtle\"]"]
+   [u/runnable "[\"Bulbasaur\" \"Charmander\" \"Squirtle\"]"]
 
-   [:h2 {:className "text-1xl font-bold text-gray-600 mt-8"} "Funções básicas"]
-   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/count" :target "_blank"} "Count"]]
-   [app.util/clojure-runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
-(count pokemon)
-"]
-
-   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/first" :target "_blank"} "First"]]
-   [app.util/clojure-runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
-(first pokemon)
-"]
-
-   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/rest" :target "_blank"} "Rest"]]
-   [app.util/clojure-runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
-(rest pokemon)
-"]
-
-   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/nth" :target "_blank"} "Nth"]]
-   [app.util/clojure-runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
-(nth pokemon 2)
-"]
-
-   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/conj" :target "_blank"} "Conj (conjunction)"]]
-   [app.util/clojure-runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
-(conj pokemon \"Caterpie\")
-"]
-
-   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/cons" :target "_blank"} "Cons (construct)"]]
-   [app.util/clojure-runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
-(cons \"Mewtwo\" pokemon)
-"]
-
-   [:h2 {:className "text-1xl font-bold text-gray-600 mt-8"} "Performance"]
-   [:div "Vetores em Clojure são implementados como diversos blocos de memória contínua, por isso:"
+   (h2 "Performance")
+   [:div "Vetores em Clojure são implementados como blocos de memória contínua, por isso:"
     [:ul {:className "list-disc	pl-8"}
      [:li "Acesso ao " [:code "nth"] " item é rápido"]
      [:li [:code "conj"] " tende a ter performance melhor do que " [:code "cons"]]
-     [:li "Criar cópias quase identicas de um vetor tende a ser rápido"]]]])
+     [:li "Criar cópias quase identicas de um vetor tende a ser rápido"]]]
+
+   (h2 "Funções básicas")
+   (link "https://clojuredocs.org/clojure.core/count" "Count")
+   [u/runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
+(count pokemon)
+"]
+
+   (link "https://clojuredocs.org/clojure.core/first" "First")
+   [u/runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
+(first pokemon)
+"]
+
+   (link "https://clojuredocs.org/clojure.core/rest" "Rest")
+   [u/runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
+(rest pokemon)
+"]
+
+   (link "https://clojuredocs.org/clojure.core/nth" "Nth")
+   [u/runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
+(nth pokemon 2)
+"]
+
+   (link "https://clojuredocs.org/clojure.core/conj" "Conj (conjunction)")
+   [u/runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
+(conj pokemon \"Caterpie\")
+"]
+
+   (link "https://clojuredocs.org/clojure.core/cons" "Cons (construct)")
+   [u/runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
+(cons \"Mewtwo\" pokemon)
+"]])
 
 (defn basic-maps []
-  [:div [:h1 {:className "text-2xl font-bold"} "Vetores Associativos (Maps)"]
+  [:div [:h1 {:className "text-2xl font-bold"} "Maps, ou Vetores Associativos"]
    [:p "Um vetor associativo (em inglês, map) é um conjunto não-ordenado de pares formados por uma chave e um valor."]
-   [app.util/clojure-runnable "{:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5}"]
-   [:p "No exemplo acima usamos keywords para definir as nossas chaves. Keywords são termos começando com dois pontos (:nome, :tipo e :peso no exemplo acima).
-        Não é obrigatório usar keywords para representar as nossa chaves, mas isso nos da uma vantagem já que keywords também são funções que procuram por ela mesmas. Então podemos fazer o seguinte:"]
-   [app.util/clojure-runnable "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5})
+   [u/runnable "{:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5}"]
+   [:p "No exemplo acima usamos keywords para definir as nossas chaves. Keywords são termos começando com dois pontos (:nome, :tipo e :peso no exemplo acima)."
+    ]
+   [:p "Não é obrigatório usar keywords para representar as nossa chaves, mas isso nos da uma vantagem já que keywords também são funções que procuram por ela mesmas. Então podemos fazer o seguinte:"]
+   [u/runnable "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5})
 (:tipo pokemon)"]
 
    [:h2 {:className "text-1xl font-bold text-gray-600 mt-8"} "Funções básicas"]
 
-   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/assoc" :target "_blank"} "Assoc"]]
-   [app.util/clojure-runnable "(def pokemon {:nome \"Charmander\"})
+   (link "https://clojuredocs.org/clojure.core/assoc" "Assoc")
+   [u/runnable "(def pokemon {:nome \"Charmander\"})
 (assoc pokemon :peso 8.5)"]
 
-   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/dissoc" :target "_blank"} "Dissoc"]]
-   [app.util/clojure-runnable "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\"})
+   (link "https://clojuredocs.org/clojure.core/dissoc" "Dissoc")
+   [u/runnable "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\"})
 (dissoc pokemon :tipo)"]
 
-   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/keys" :target "_blank"} "Keys"]]
-   [app.util/clojure-runnable "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5})
+   (link "https://clojuredocs.org/clojure.core/keys" "Keys")
+   [u/runnable "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5})
 (keys pokemon)"]
 
-   [:p {:className "mt-2"} [:a {:href "https://clojuredocs.org/clojure.core/vals" :target "_blank"} "Vals"]]
-   [app.util/clojure-runnable "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5})
+   (link "https://clojuredocs.org/clojure.core/vals" "Vals")
+   [u/runnable "(def pokemon {:nome \"Charmander\" :tipo \"Fogo\" :peso 8.5})
 (vals pokemon)"]])
 
 (defn basic-functions []
-  [:div [:h1 {:className "text-2xl font-bold"} "Funções"]
-   [:p "Clojure faz parte da família de linguagens Lisp. "
-    "O nome Lisp vem do inglês List Processing (Processamento de Listas). "
-    "Listas são definidas entre parênteses e uma lista é interpretada por padrão considerando que seu primeiro item é uma função e os itens a seguir são parâmetros."
-    "No exemplo abaixo, \"+\" é uma função."]
-   [app.util/clojure-runnable "(+ 1 2 3)"]
-
+  [:div (h1 "Funções")
    [:p "Para criar uma nova função você pode usar a função "
-    (app.util/clojure-inline "(defn)")
+    (u/inline "(defn)")
     ". No exemplo abaixo, Definimos uma função chamada soma que por sua vez aplica "
     "a função \"+\" aos parâmetros \"primeiro\" e \"segundo\""]
-   [app.util/clojure-runnable "(defn soma [primeiro segundo]
-                (+ primeiro segundo))
-
-              (soma 10 1)"]])
+   [u/runnable "(defn soma [primeiro segundo]
+           (+ primeiro segundo))
+           (soma 10 1)"]])
