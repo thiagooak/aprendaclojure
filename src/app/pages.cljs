@@ -32,13 +32,6 @@
    [:p "Um vetor é uma coleção ordenada de itens"]
    [u/runnable "[\"Bulbasaur\" \"Charmander\" \"Squirtle\"]"]
 
-   (h2 "Performance")
-   [:div "Vetores em Clojure são implementados como blocos de memória contínua, por isso:"
-    [:ul {:className "list-disc	pl-8"}
-     [:li "Acesso ao " [:code "nth"] " item é rápido"]
-     [:li [:code "conj"] " tende a ter performance melhor do que " [:code "cons"]]
-     [:li "Criar cópias quase identicas de um vetor tende a ser rápido"]]]
-
    (h2 "Funções básicas")
    (link "https://clojuredocs.org/clojure.core/count" "Count")
    [u/runnable "(def pokemon [\"Bulbasaur\" \"Charmander\" \"Squirtle\"])
