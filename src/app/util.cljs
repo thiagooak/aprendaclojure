@@ -24,7 +24,7 @@
                       (.remove (.-classList (.getElementById js/document "repl-input")) "animate-pulse")
 
                       (set! (.-innerHTML child-input)
-                            (str "<div class=\"flex\">user=> <div>" (replace @repl-input "\n" "<br>") "</div></div>"))
+                            (str "<div class=\"flex\">=> <div>" (replace @repl-input "\n" "<br>") "</div></div>"))
                       (set! (.-innerHTML child-output)
                             (str "<div class=\"border-dashed border-gray-600 border-b mb-2 pb-2\">" (evaluate @repl-input) "</div>"))
                       (set! (.-innerHTML child-print)
@@ -47,7 +47,7 @@
     [:div {:className "h-full"}
      [:div {:id "print" :className "px-2 py-1 h-3/4 max-h-3/4 overflow-scroll scroll-smooth"} " "]
      [:div {:className "flex-row sm:flex px-2 sm:h-1/4"}
-      "user=>"
+      "=>"
       [:textarea {:defaultValue @repl-input
                   :id "repl-input"
                   :className "w-full h-full p-1 bg-gray-800"

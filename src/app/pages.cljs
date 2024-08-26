@@ -10,7 +10,22 @@
    [:p "Clojure faz parte da família de linguagens Lisp. "
     "O nome Lisp vem do inglês List Processing (Processamento de Listas). "
     "Listas são definidas entre parênteses e uma lista é interpretada por padrão considerando que seu primeiro item é uma função e os itens a seguir são parâmetros."]
-   [u/runnable "(println \"Hello, world!\")"]])
+   [u/runnable "(println \"Hello, world!\")"]
+   [u/runnable "(str \"Hello, \" \"again!\")"]
+   (h2 "Operações aritméticas")
+   [u/runnable "(+ 1 2 3)"]
+   [u/runnable "(+ (* 100 (/ 9 5)) 32)"]
+   (h2 "Bind")
+   [u/runnable "(def temp-celcius 20)
+(+ (* temp-celcius (/ 9 5)) 32)"]
+   (h2 "Funções")
+   [u/runnable "(defn celcius->fahrenheit [c]
+  (+ (* c (/ 9 5)) 32))
+
+(println (celcius->fahrenheit 0))
+(println (celcius->fahrenheit 100))
+   "]
+   ])
 
 (defn basic-vectors []
   [:div (h1 "Vetores")
