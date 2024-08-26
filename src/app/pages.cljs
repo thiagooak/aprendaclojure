@@ -10,7 +10,7 @@
    [:p "Clojure faz parte da família de linguagens Lisp. "
     "O nome Lisp vem do inglês List Processing (Processamento de Listas). "
     "Listas são definidas entre parênteses e uma lista é interpretada por padrão considerando que seu primeiro item é uma função e os itens a seguir são parâmetros."]
-   [u/runnable "(+ 1 2 3)"]])
+   [u/runnable "(println \"Hello, world!\")"]])
 
 (defn basic-vectors []
   [:div (h1 "Vetores")

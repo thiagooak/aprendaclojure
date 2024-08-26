@@ -4,29 +4,37 @@
             [sci.core :as sci]
             [clojure.string :refer [replace]]))
 
+(def repl-input (r/atom "\"Hello, World!\""))
+(def repl-output (r/atom ""))
+
+(defn add-to-repl-output [in] ()
+  (reset! repl-output (str @repl-output in)))
+
 (defn evaluate [input]
   (try
-    (let [output (sci/eval-string input)]
+    (let [output (sci/with-bindings {sci/print-fn add-to-repl-output} (sci/eval-string input))]
       (with-out-str (pprint output)))
     (catch js/Error e (str "caught exception: " e))))
 
-(def repl-input (r/atom "\"Hello, World!\""))
-(def repl-output (r/atom ""))
 (defn repl-print [] (let [parent (.getElementById js/document "print")
                           child-input (.createElement js/document "p")
+                          child-print (.createElement js/document "p")
                           child-output (.createElement js/document "p")]
-
-                      (reset! repl-output (evaluate @repl-input))
 
                       (.remove (.-classList (.getElementById js/document "repl-input")) "animate-pulse")
 
                       (set! (.-innerHTML child-input)
                             (str "<div class=\"flex\">user=> <div>" (replace @repl-input "\n" "<br>") "</div></div>"))
                       (set! (.-innerHTML child-output)
-                            (str "<div class=\"border-dashed border-gray-600 border-b mb-2 pb-2\">" @repl-output "</div>"))
+                            (str "<div class=\"border-dashed border-gray-600 border-b mb-2 pb-2\">" (evaluate @repl-input) "</div>"))
+                      (set! (.-innerHTML child-print)
+                            (str "<div>" (replace @repl-output "\n" "<br>") "</div>"))
+
                       (.appendChild parent child-input)
+                      (.appendChild parent child-print)
                       (.appendChild parent child-output)
-                      (.scrollTo parent 0 (.-scrollHeight parent))))
+                      (.scrollTo parent 0 (.-scrollHeight parent))
+                      (reset! repl-output "")))
 
 (defn update-repl-input [value]
   (let [el (.getElementById js/document "repl-input")]
